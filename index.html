@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unhinged</title>
+  <style>
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(5px, -5px); }
+      60% { transform: translate(-5px, 5px); }
+      80% { transform: translate(5px, -5px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      transition: background-color 0.5s ease;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: none;
+    }
+
+    #quote {
+      font-size: 1.8rem;
+      max-width: 600px;
+      margin: 2rem 0;
+      min-height: 140px;
+      line-height: 1.4;
+      transition: color 0.5s ease;
+    }
+
+    button {
+      background: #00ff99;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 15px;
+      color: #121212;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00ff99;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #00cc77;
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <h1>Unhinged</h1>
+  <div id="quote">Hit the button for some unhinged advice!</div>
+  <button id="newQuoteBtn">Hit me with unhinged advice!</button>
+
+  <script>
+    const quotes = [
+      // How I Met Your Mother
+      "It's gonna be legen—wait for it—dary! — Barney Stinson, HIMYM",
+      "When I get sad, I stop being sad and be awesome instead. — Barney Stinson, HIMYM",
+
+      // Modern Family
+      "I’m the cool dad, that's my thing. — Phil Dunphy, Modern Family",
+      "Claire, you’re my rock. I mean, sometimes a rock that punches me in the face, but a rock. — Phil Dunphy, Modern Family",
+
+      // Big Bang Theory
+      "Bazinga! — Sheldon Cooper, Big Bang Theory",
+      "I'm not crazy, my mother had me tested. — Sheldon Cooper, Big Bang Theory",
+
+      // Gossip Girl
+      "You know you love me. XOXO, Gossip Girl.",
+      "I'm Chuck Bass. — Chuck Bass, Gossip Girl",
+      
+      // Outer Banks
+      "We ride together, we die together. — John B, Outer Banks",
+      "Money doesn’t buy you happiness, but it sure helps. — Outer Banks",
+
+      // The Vampire Diaries
+      "I’m the original vampire. — Klaus Mikaelson, TVD",
+      "You’re gonna have to kill me before I go anywhere. — Elena Gilbert, TVD",
+
+      // Gilmore Girls
+      "Coffee first, then the world. — Lorelai Gilmore",
+      "Oy with the poodles already! — Lorelai Gilmore",
+
+      // The Office
+      "Bears, beets, Battlestar Galactica. — Jim Halpert, The Office",
+      "I declare bankruptcy! — Michael Scott, The Office",
+
+      // Marvel
+      "I can do this all day. — Captain America",
+      "We have a Hulk. — Tony Stark, Marvel",
+
+      // Batman (The Dark Knight)
+      "Why so serious? — The Joker",
+      "I’m Batman. — Batman",
+
+      // DC Universe
+      "Truth, justice, and the American way. — Superman",
+      "The night is darkest just before the dawn. — Batman",
+
+      // Popular / Meme Classics
+      "I’m baby. — Meme",
+      "This is fine. — Meme",
+      "To infinity and beyond! — Buzz Lightyear",
+      "Winter is coming. — Game of Thrones",
+      "I volunteer as tribute! — The Hunger Games",
+      "That’s what she said. — The Office",
+      "You can’t handle the truth! — A Few Good Men",
+      "I drink and I know things. — Tyrion Lannister, Game of Thrones"
+    ];
+
+    const quoteDiv = document.getElementById("quote");
+    const btn = document.getElementById("newQuoteBtn");
+    const body = document.body;
+
+    function getRandomQuote() {
+      return quotes[Math.floor(Math.random() * quotes.length)];
+    }
+
+    function getRandomColor() {
+      // Random pastel-ish colors for text
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}, 70%, 80%)`;
+    }
+
+    function getRandomColorDark() {
+      // For background, keep it darker
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}, 60%, 15%)`;
+    }
+
+    btn.addEventListener("click", () => {
+      // Show new quote
+      quoteDiv.textContent = getRandomQuote();
+
+      // Change quote text color randomly
+      quoteDiv.style.color = getRandomColor();
+
+      // Change background color randomly (dark colors)
+      let newColor;
+      do {
+        newColor = getRandomColorDark();
+      } while (isColorTooBright(newColor));
+
+      body.style.backgroundColor = newColor;
+
+      // Add shake animation then remove it
+      body.classList.add("shake");
+      setTimeout(() => {
+        body.classList.remove("shake");
+      }, 500);
+    });
+
+    // Helper to keep background color dark (avoid too bright colors)
+    function isColorTooBright(hslColor) {
+      // Extract lightness from HSL string like "hsl(123, 60%, 15%)"
+      const match = hslColor.match(/(\d+)%\)$/);
+      if (!match) return false;
+      const lightness = parseInt(match[1]);
+      return lightness > 40; // threshold to keep it dark enough
+    }
+  </script>
+</body>
+</html>
+
